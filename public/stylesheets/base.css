@@ -58,7 +58,7 @@ h2 {
 }
 
 
-table {
+/*<table {
 	table-layout: fixed;
 	width: 800px;
 	margin: 0 auto;
@@ -68,8 +68,19 @@ table {
 
 th {
 	border-bottom: 1px solid #000;
+}*/
+
+table {
+    border: 2px solid #666;
+    width: 100%;
 }
 
+th {
+    background: #f8f8f8;
+    font-weight: bold;
+    padding: 2px;
+    color: aqua;
+}	
 th, td {
 	text-align: left;
 	padding: 2px 20px;

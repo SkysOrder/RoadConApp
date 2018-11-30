@@ -4,60 +4,52 @@
 <head>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="Script1.js"></script>
 
     <script>
-        /*$("#frameAp").load(function () {
-            console.log($('#frameAp').contents().find(".infowindow-image").html());
-        });*/
         $(document).ready(function () {
-            //var imgSRc = "";
-            /*("#frameAp").onload = function () {
-                var win = $("#frameAp").contentWindow;
-                var doc = $("#frameAp").contentDocument ? $("#frameAp").contentDocument.document : $("#frameAp").contentWindow.document;
-                var form = doc.getElementByClass("infowindow-image");
-                var imgSrc = form.attr("src");
-                console.log(imgSrc);
-                var win = $("#frameAp").contentWindow;
-                var imgSRc = win.$(".infowindow-image").attr("src");
-                console.log(imgSRc);
-            };*/
             var sttr = "https://api.data.gov.sg/v1/transport/traffic-images?date_time="
             var d = new Date($.now());
             var DTMS = d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + "T" + ("0" + d.getHours()).slice(-2) + "%3A" + ("0" + d.getMinutes()).slice(-2) + "%3A" + ("0" + d.getSeconds()).slice(-2);
             var apiCl = sttr + DTMS;
 
-            $.getJSON(apiCl, function (data) {
+            //runDetectPeopleExample();
+            $.getJSON(apiCl, function (data) {                
                 var items = [];
                 $.each(data, function (key, val) {
                     $.each(val, function (ka, vla) {
                         $.each(vla, function (ka1, vla1) {
                             console.log(ka1);
                             console.log(vla1);
-                            items.push(vla1);
+                            //items.push(vla1);
                             $.each(val, function (kar1, var1) {
                                 console.log(kar1);
                                 console.log(var1);
-                                itemArr = [items[1]];
-                                console.log(itemArr[0]);
-                                ArrIt = [itemArr[0]];
-                                console.log(ArrIt[0]);
+                                $.each(var1, function (ka1, val2) {
+                                    console.log(val2);
+                                    console.log(val2.length);
+                                    var lenva = val2.length;
+                                    if (lenva > 80) {
+                                        if (val2.length == lenva)
+                                            for (i = 0; i < val2.length; i++) {
+                                                var imgsr = "<img src='";
+                                                var imgrnd = "' />";
+                                                var imgSqu = imgsr + val2[i].image + imgrnd;
+                                                var tblRow = "<tr class='row1'>" +
+                                                    "<td>" + val2[i].camera_id + "</td>" +
+                                                    "<td>" + imgSqu + "</td>" +
+                                                    "</tr>"
+                                                $(tblRow).appendTo("#JSTable");
+                                                console.log("Run");
+                                            }
+                                    } else {
+                                        console.log("test");
+                                    }
+                                });
                             });
                         });
                     });
                 });
-            });
-            $("#ckBtn").click(function () {
-                //var imagSrcs = $("#frameAp").contentDocument;
-                //var imagSrc = $("#frameAp").contentDocument.body.$(".infowindow-image").attr("src");
-                //var imagSrc = $(".infowindow-image").attr("src");
-                //alert(imagSrc);
-                var x = document.getElementById("frameAp");
-                var y = x.contentDocument || x.contentWindow.document;
-                //var imagSrc = x.$(".infowindow-image").attr("src");
-                console.log(y);
-         
-                $("#ImgCh img").attr("src", "https://images.data.gov.sg/api/traffic-images/2018/11/8cdf6cbd-1a22-48d9-8f13-60e9f643c92d.jpg");
-                console.log(imagSrc);
             });
         });
 
@@ -68,8 +60,6 @@
 
     <title>Real Time Traffic Congestion App</title>
 
-    <!-- Use the maxcdn network to get Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -107,18 +97,23 @@
                     Click to show congestion level.
                 </p>
                 <div class="row">
-                    <div class="col-sm-6 col-sm-6">
-                        <iframe id="frameAp" style="cursor:pointer;" width="600" height="400" src="https://data.gov.sg/dataset/traffic-images/resource/e127e29a-bd48-47e2-a0a7-e89ce31f10c7/view/39ba8de0-6242-40d3-8664-793316c47b09" frameBorder="0" ></iframe>
+                    <div class="col-sm-7 col-sm-7" onload="drawRow">
+                        <table id="JSTable" border="1">
+                            <tr>
+                                <th>Camera ID</th>
+                                <th>Image</th>
+                                
+                            </tr>
+                        </table>
                     </div>
-                    <div class="col-sm-6 col-sm-6">
+                    <div class="col-sm-5 col-sm-5">
                         <div id="ImgCh">
-                            <img id="CongestImg" src="..\Images\58898400_p0.png" alt="Test Image" />
+                            <img id="CongestImg" alt="Test Image" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
-                            <div class="btn btn-lg" id="ckBtn"
-                                    style="border: none; background-color: #00aed1; font-weight: bold;">
+                            <div class="btn btn-lg" id="ckBtn" style="border: none; background-color: #00aed1; font-weight: bold;">
                                 Check
                             </div>
                         </div>
